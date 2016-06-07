@@ -14,13 +14,11 @@ import java.util.List;
  */
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
-
     List<ToDo> mToDoList = new ArrayList<>();
 
     public ToDoAdapter(List<ToDo> list) {
         mToDoList = list;
     }
-
 
     @Override
     public ToDoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,11 +29,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     @Override
     public void onBindViewHolder(ToDoViewHolder holder, int position) {
         ToDo toDo = mToDoList.get(position);
-        TextView itemTitleView = holder.itemTitleView;
-        TextView itemPriorityView = holder.itemPriorityView;
-        itemTitleView.setText(toDo.getTitle());
-        itemPriorityView.setText(toDo.getPriority());
-
+        holder.itemTitleView.setText(toDo.getTitle());
+        holder.itemPriorityView.setText(toDo.getPriority());
     }
 
     @Override
