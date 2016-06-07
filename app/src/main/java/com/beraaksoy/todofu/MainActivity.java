@@ -1,5 +1,6 @@
-package com.beraaksoy.todo_fu;
+package com.beraaksoy.todofu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -8,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
         add_place_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //fetchPlace();
-                Toast.makeText(MainActivity.this, "Fetching list of nearby places", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                startActivity(intent);
             }
         });
     }

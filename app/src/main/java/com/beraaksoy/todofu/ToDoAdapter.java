@@ -1,4 +1,4 @@
-package com.beraaksoy.todo_fu;
+package com.beraaksoy.todofu;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,7 +33,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         ToDo toDo = mToDoList.get(position);
         TextView itemDescView = holder.itemDescView;
         TextView itemPriorityView = holder.itemPriorityView;
-        itemDescView.setText(toDo.getTask());
+        itemDescView.setText(toDo.getTitle());
         itemPriorityView.setText(toDo.getPriority());
 
     }

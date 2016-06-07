@@ -1,4 +1,4 @@
-package com.beraaksoy.todo_fu;
+package com.beraaksoy.todofu;
 
 import org.junit.Test;
 

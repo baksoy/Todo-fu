@@ -1,0 +1,41 @@
+package com.beraaksoy.todofu;
+
+import java.util.Date;
+
+/**
+ * Created by beraaksoy on 6/6/16.
+ */
+public class ToDo {
+    String title;
+    Date date;
+    String note;
+    String priority; //today tomorrow soon later
+    String status;
+
+    public ToDo(String title) {
+        this.title = title;
+        this.date = new Date();
+    }
+
+    public ToDo(String title, String priority) {
+        this.title = title;
+        this.priority = priority;
+        this.date = new Date();
+    }
+
+    public ToDo(String title, String priority, String status, String note) {
+        this.title = title;
+        this.priority = priority;
+        this.status = status;
+        this.note = note;
+        this.date = new Date();
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+}
