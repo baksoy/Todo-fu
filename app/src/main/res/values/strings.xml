@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Todo-Fu</string>
+    <string name="add_new_todo">Add new todo</string>
+</resources>
