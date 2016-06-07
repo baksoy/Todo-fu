@@ -1,13 +1,17 @@
 package com.beraaksoy.todofu;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
+import android.util.Log;
 
 /**
  * Created by beraaksoy on 6/7/16.
  */
 public class TodoDbHelper extends SQLiteOpenHelper {
+    private static final String TAG = "TodoDbHelper";
 
     public static final String DATABASE_NAME = "todofu.db";
     public static final int DATABASE_VERSION = 1;
@@ -33,7 +37,6 @@ public class TodoDbHelper extends SQLiteOpenHelper {
 
     // Columns
     public interface TodoTableColumns {
-        String TODO_ID = "_id";
         String TODO_TITLE = "todo_title";
         String TODO_NOTE = "todo_note";
         String TODO_DATE = "todo_date";
@@ -45,7 +48,7 @@ public class TodoDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + Tables.TODO_TABLE + "("
-                + TodoTableColumns.TODO_ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + BaseColumns._ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + TodoTableColumns.TODO_TITLE + "TEXT,"
                 + TodoTableColumns.TODO_NOTE + "TEXT,"
                 + TodoTableColumns.TODO_DATE + "TEXT,"
@@ -65,4 +68,27 @@ public class TodoDbHelper extends SQLiteOpenHelper {
             onCreate(db);
         }
     }
+
+
+    /**
+     * CRUD METHODS ***********************
+     **/
+
+    // CREATE
+    public void insertTodo(ToDo toDo) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(TodoTableColumns.TODO_TITLE, toDo.title);
+            db.insertOrThrow(Tables.TODO_TABLE, null, values);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to add a todo item");
+        } finally {
+            db.endTransaction();
+        }
+    }
+
 }

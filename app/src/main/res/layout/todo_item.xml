@@ -5,7 +5,7 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/taskItemDesc"
+        android:id="@+id/todoItemTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -15,11 +15,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_weight="8"
-        android:text="Task item goes here"
+        android:text="Todo item goes here"
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/taskItemPriority"
+        android:id="@+id/radioToday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

@@ -31,9 +31,9 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     @Override
     public void onBindViewHolder(ToDoViewHolder holder, int position) {
         ToDo toDo = mToDoList.get(position);
-        TextView itemDescView = holder.itemDescView;
+        TextView itemTitleView = holder.itemTitleView;
         TextView itemPriorityView = holder.itemPriorityView;
-        itemDescView.setText(toDo.getTitle());
+        itemTitleView.setText(toDo.getTitle());
         itemPriorityView.setText(toDo.getPriority());
 
     }
@@ -44,14 +44,14 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     }
 
     public class ToDoViewHolder extends RecyclerView.ViewHolder {
-        public TextView itemDescView;
-        public TextView itemPriorityView;
+        private TextView itemTitleView;
+        private TextView itemPriorityView;
 
         public ToDoViewHolder(View itemView) {
             super(itemView);
 
-            itemDescView = (TextView) itemView.findViewById(R.id.taskItemDesc);
-            itemPriorityView = (TextView) itemView.findViewById(R.id.taskItemPriority);
+            itemTitleView = (TextView) itemView.findViewById(R.id.todoItemTitle);
+            itemPriorityView = (TextView) itemView.findViewById(R.id.radioToday);
         }
     }
 

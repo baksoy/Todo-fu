@@ -17,6 +17,7 @@ public class ToDo {
         this.date = new Date();
     }
 
+
     public ToDo(String title, String priority) {
         this.title = title;
         this.priority = priority;
@@ -37,5 +38,9 @@ public class ToDo {
 
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
