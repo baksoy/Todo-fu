@@ -1,6 +1,8 @@
 package com.beraaksoy.todofu;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,7 +38,22 @@ public class DetailActivity extends AppCompatActivity {
         mTodoNote = (EditText) findViewById(R.id.todoItemNote);
         mTodoDate = (EditText) findViewById(R.id.todoItemDate);
 
+        // SAVE OUR TODOOO ITEM
+        FloatingActionButton save_todo_fab = (FloatingActionButton) findViewById(R.id.fab_save_todo);
+        assert save_todo_fab != null;
+        save_todo_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), MainActivity.class);
+                String title = mTodoTitle.getText().toString();
+                String priority = mPriorityButton.getText().toString();
 
+                ToDo todo = new ToDo(title, priority);
+                TodoDbHelper dbhelper = TodoDbHelper.getsInstance(v.getContext());
+                dbhelper.insertTodo(todo);
+                startActivity(intent);
+            }
+        });
 
     }
 

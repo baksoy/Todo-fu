@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Adding menu icon to Toolbar
+        // Adding Menu icon to Toolbar
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayShowTitleEnabled(false);
@@ -33,68 +33,18 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView toDoItems = (RecyclerView) findViewById(R.id.todoList);
 
-        List<ToDo> toDoList = new ArrayList<>();
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
-        toDoList.add(new ToDo("Buy Milk", "Today"));
-        toDoList.add(new ToDo("Buy Chocolate", "Tomorrow"));
-        toDoList.add(new ToDo("Buy Bread", "Soon"));
+        // Get a handle on our database
+        TodoDbHelper dbHelper = TodoDbHelper.getsInstance(this);
 
+        List<ToDo> toDoList = new ArrayList<>();
+
+        // Grab all our Todoo items and add append it to our list
+        List<ToDo> result = dbHelper.getAllPosts();
+        for (ToDo toDo : result) {
+            toDoList.add(toDo);
+        }
+
+        // Set our adapter to display to list of Todos
         ToDoAdapter adapter = new ToDoAdapter(toDoList);
         if (toDoItems != null) {
             toDoItems.setAdapter(adapter);
@@ -104,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        // Fab to search a nearby Place and add one
-        FloatingActionButton add_place_fab = (FloatingActionButton) findViewById(R.id.fab_add_todo);
+        // ADD A TODOO ITEM
+        FloatingActionButton add_place_fab = (FloatingActionButton) findViewById(R.id.fab_save_todo);
         assert add_place_fab != null;
         add_place_fab.setOnClickListener(new View.OnClickListener() {
             @Override
