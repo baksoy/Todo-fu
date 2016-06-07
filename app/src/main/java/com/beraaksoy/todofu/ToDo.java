@@ -9,8 +9,8 @@ public class ToDo {
     String title;
     Date date;
     String note;
-    String priority; //today tomorrow soon later
-    String status;
+    String priority; // today, tomorrow, later
+    String status; // done, pending
 
     public ToDo(String title) {
         this.title = title;
