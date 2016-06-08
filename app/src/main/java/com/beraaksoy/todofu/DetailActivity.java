@@ -1,5 +1,6 @@
 package com.beraaksoy.todofu;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,10 +19,12 @@ import android.widget.Toast;
 
 public class DetailActivity extends AppCompatActivity {
 
+    public static final String ACTION_EDIT = "update_todoitem";
     EditText mTodoTitle;
     EditText mTodoNote;
     EditText mTodoDate;
     RadioButton mPriorityButton;
+    static Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,14 @@ public class DetailActivity extends AppCompatActivity {
         mTodoNote = (EditText) findViewById(R.id.todoItemNote);
         mTodoDate = (EditText) findViewById(R.id.todoItemDate);
 
-        // SAVE OUR TODOOO ITEM
+        // EDIT - If we are Editing, get todoitem fields from Main and set the Detail views with it
+        intent = getIntent();
+        ToDo mToDo = (ToDo) intent.getSerializableExtra(MainActivity.TODOITEM);
+        if (mToDo != null) {
+            mTodoTitle.setText(mToDo.getTitle());
+        }
+
+        // SAVE our todoitem
         FloatingActionButton save_todo_fab = (FloatingActionButton) findViewById(R.id.fab_save_todo);
         assert save_todo_fab != null;
         save_todo_fab.setOnClickListener(new View.OnClickListener() {
@@ -60,9 +70,10 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
-    // Set TodoTask Priority
+    // Set todoitem Priority
     public void onTodoPriorityButtonClicked(View view) {
         // Check if a radio button is clicked to set todotask priority
         boolean checked = ((RadioButton) view).isChecked();
@@ -124,5 +135,11 @@ public class DetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static Intent getActionIntent(Context context, ToDo toDo, String action) {
+        intent = new Intent(context, DetailActivity.class);
+        intent.setAction(action);
+        intent.putExtra(MainActivity.TODOITEM, toDo);
+        return intent;
+    }
 
 }

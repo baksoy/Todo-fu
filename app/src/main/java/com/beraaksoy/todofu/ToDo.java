@@ -1,11 +1,12 @@
 package com.beraaksoy.todofu;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by beraaksoy on 6/6/16.
  */
-public class ToDo {
+public class ToDo implements Serializable {
     String title;
     Date date;
     String note;
