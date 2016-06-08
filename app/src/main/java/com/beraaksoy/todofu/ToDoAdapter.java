@@ -17,9 +17,11 @@ import java.util.List;
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
     List<ToDo> mToDoList = new ArrayList<>();
+    Context mContext;
 
-    public ToDoAdapter(List<ToDo> list) {
+    public ToDoAdapter(List<ToDo> list, Context context) {
         mToDoList = list;
+        mContext = context;
     }
 
     @Override
@@ -33,6 +35,23 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         ToDo toDo = mToDoList.get(position);
         holder.itemTitleView.setText(toDo.getTitle());
         holder.itemPriorityView.setText(toDo.getPriority());
+
+        switch (holder.itemPriorityView.getText().toString()) {
+            case MainActivity.TODAY:
+                holder.itemPriorityView.setBackground(mContext.getResources().getDrawable(R.drawable.priority_today_bg));
+                //holder.itemPriorityView.setBackgroundColor(mContext.getResources().getColor(R.color.today));
+                break;
+
+            case MainActivity.SOON:
+                //holder.itemPriorityView.setBackgroundColor(mContext.getResources().getColor(R.color.soon));
+                holder.itemPriorityView.setBackground(mContext.getResources().getDrawable(R.drawable.priority_soon_bg));
+                break;
+
+            case MainActivity.LATER:
+                //holder.itemPriorityView.setBackgroundColor(mContext.getResources().getColor(R.color.later));
+                holder.itemPriorityView.setBackground(mContext.getResources().getDrawable(R.drawable.priority_later_bg));
+                break;
+        }
     }
 
     @Override

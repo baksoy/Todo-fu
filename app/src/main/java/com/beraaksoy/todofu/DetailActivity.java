@@ -21,8 +21,11 @@ public class DetailActivity extends AppCompatActivity {
 
     public static final String ACTION_EDIT = "update_todoitem";
     private EditText mTodoTitle;
-    private RadioButton mPriorityButton;
+    private RadioButton mPriorityToday;
+    private RadioButton mPrioritySoon;
+    private RadioButton mPriorityLater;
     private static Intent intent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class DetailActivity extends AppCompatActivity {
         // Adding Toolbar to Main screen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         // Adding menu icon to Toolbar
         ActionBar supportActionBar = getSupportActionBar();
@@ -43,30 +47,28 @@ public class DetailActivity extends AppCompatActivity {
         mTodoTitle = (EditText) findViewById(R.id.todoItemTitle);
         EditText mTodoNote = (EditText) findViewById(R.id.todoItemNote);
         EditText mTodoDate = (EditText) findViewById(R.id.todoItemDate);
-        RadioButton mPriorityToday = (RadioButton) findViewById(R.id.radioToday);
-        RadioButton mPriorityNext = (RadioButton) findViewById(R.id.radioNext);
-        RadioButton mPriorityLater = (RadioButton) findViewById(R.id.radioLater);
+        mPriorityToday = (RadioButton) findViewById(R.id.radioToday);
+        mPrioritySoon = (RadioButton) findViewById(R.id.radioSoon);
+        mPriorityLater = (RadioButton) findViewById(R.id.radioLater);
 
         // EDIT - If we are Editing, get todoitem fields from Main and set the Detail views with it
         intent = getIntent();
         ToDo mToDo = (ToDo) intent.getSerializableExtra(MainActivity.TODOITEM);
         if (mToDo != null) {
-            mTodoTitle.setText(mToDo.getTitle()); //Set title
+            mTodoTitle.setText(mToDo.getTitle()); //Set title in detail view
 
-            switch (mToDo.getPriority()) { //Set priority
-                case ("Today"):
+            switch (mToDo.getPriority()) { //Set priority in detail view
+                case MainActivity.TODAY:
                     if (mPriorityToday != null) {
                         mPriorityToday.setChecked(true);
                     }
                     break;
-                case "Next":
-                    Toast.makeText(DetailActivity.this, "Next", Toast.LENGTH_SHORT).show();
-                    if (mPriorityNext != null) {
-                        mPriorityNext.setChecked(true);
+                case MainActivity.SOON:
+                    if (mPrioritySoon != null) {
+                        mPrioritySoon.setChecked(true);
                     }
                     break;
-                case "Later":
-                    Toast.makeText(DetailActivity.this, "Later", Toast.LENGTH_SHORT).show();
+                case MainActivity.LATER:
                     if (mPriorityLater != null) {
                         mPriorityLater.setChecked(true);
                     }
@@ -81,7 +83,14 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MainActivity.class);
                 String title = mTodoTitle.getText().toString();
-                String priority = mPriorityButton.getText().toString();
+                String priority = null;
+                if (mPriorityToday.isChecked()) {
+                    priority = mPriorityToday.getText().toString();
+                } else if (mPrioritySoon.isChecked()) {
+                    priority = mPrioritySoon.getText().toString();
+                } else {
+                    priority = mPriorityLater.getText().toString();
+                }
 
                 ToDo todo = new ToDo(title, priority);
                 TodoDbHelper dbhelper = TodoDbHelper.getsInstance(v.getContext());
@@ -102,17 +111,15 @@ public class DetailActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.radioToday:
                 if (checked)
-                    mPriorityButton = (RadioButton) findViewById(R.id.radioToday);
+                    mPriorityToday.setChecked(true);
                 break;
-            case R.id.radioNext:
+            case R.id.radioSoon:
                 if (checked)
-                    Toast.makeText(DetailActivity.this, "TOMORROW", Toast.LENGTH_SHORT).show();
-                mPriorityButton = (RadioButton) findViewById(R.id.radioNext);
+                    mPrioritySoon.setChecked(true);
                 break;
             case R.id.radioLater:
                 if (checked) {
-                    Toast.makeText(DetailActivity.this, "LATER", Toast.LENGTH_SHORT).show();
-                    mPriorityButton = (RadioButton) findViewById(R.id.radioLater);
+                    mPriorityLater.setChecked(true);
                     break;
                 }
         }

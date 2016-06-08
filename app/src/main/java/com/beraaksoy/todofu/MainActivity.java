@@ -17,6 +17,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TODOITEM = "todoitem";
+    public static final String TODAY = "Today";
+    public static final String SOON = "Soon";
+    public static final String LATER = "Later";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Set our adapter to display our Todoo list
-        ToDoAdapter adapter = new ToDoAdapter(toDoList);
+        ToDoAdapter adapter = new ToDoAdapter(toDoList, this);
 
         if (toDoItems != null) {
             toDoItems.setLayoutManager(new LinearLayoutManager(this));

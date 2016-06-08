@@ -5,4 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="formTextColor">#808080</color>
     <color name="divider">#e0e0e0</color>
+    <color name="today">#FF6347</color>
+    <color name="soon">#00BFFF</color>
+    <color name="later">#66CDAA</color>
+
 </resources>
