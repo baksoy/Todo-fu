@@ -91,7 +91,7 @@
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/radioTomorrow"
+            android:id="@+id/radioNext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
