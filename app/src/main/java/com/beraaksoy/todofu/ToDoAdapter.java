@@ -1,5 +1,7 @@
 package com.beraaksoy.todofu;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,12 +44,19 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         private TextView itemTitleView;
         private TextView itemPriorityView;
 
-        public ToDoViewHolder(View itemView) {
+        public ToDoViewHolder(final View itemView) {
             super(itemView);
-
             itemTitleView = (TextView) itemView.findViewById(R.id.todoItemTitle);
             itemPriorityView = (TextView) itemView.findViewById(R.id.radioToday);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(v.getContext(), DetailActivity.class);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
-
 }

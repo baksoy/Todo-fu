@@ -3,4 +3,5 @@
     <string name="add_new_todo">Add New Todo</string>
     <string name="todoItemTitle">Title</string>
     <string name="todo_note">Notes</string>
+    <string name="action_delete_todo">Delete</string>
 </resources>
