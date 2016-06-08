@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -41,6 +40,7 @@ public class TodoDbHelper extends SQLiteOpenHelper {
 
     // Columns
     public interface TodoTableColumns {
+        String TODO_ID = "_id";
         String TODO_TITLE = "todo_title";
         String TODO_NOTE = "todo_note";
         String TODO_DATE = "todo_date";
@@ -52,7 +52,7 @@ public class TodoDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + Tables.TODO_TABLE + " ("
-                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + TodoTableColumns.TODO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + TodoTableColumns.TODO_TITLE + " TEXT,"
                 + TodoTableColumns.TODO_NOTE + " TEXT,"
                 + TodoTableColumns.TODO_DATE + " TEXT,"
