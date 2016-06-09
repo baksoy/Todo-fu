@@ -19,13 +19,14 @@ import android.widget.Toast;
 
 public class DetailActivity extends AppCompatActivity {
 
+    private static final String TAG = "DetailActivity";
     public static final String ACTION_EDIT = "update_todoitem";
     private EditText mTodoTitle;
+    private EditText mTodoNote;
     private RadioButton mPriorityToday;
     private RadioButton mPrioritySoon;
     private RadioButton mPriorityLater;
-    private static Intent intent;
-
+    private ToDo mToDo; // Our Serializable ToDoItem
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,6 @@ public class DetailActivity extends AppCompatActivity {
         // Adding Toolbar to Main screen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         // Adding menu icon to Toolbar
         ActionBar supportActionBar = getSupportActionBar();
@@ -45,35 +45,40 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         mTodoTitle = (EditText) findViewById(R.id.todoItemTitle);
-        EditText mTodoNote = (EditText) findViewById(R.id.todoItemNote);
-        EditText mTodoDate = (EditText) findViewById(R.id.todoItemDate);
+        mTodoNote = (EditText) findViewById(R.id.todoItemNote);
         mPriorityToday = (RadioButton) findViewById(R.id.radioToday);
         mPrioritySoon = (RadioButton) findViewById(R.id.radioSoon);
         mPriorityLater = (RadioButton) findViewById(R.id.radioLater);
 
         // EDIT - If we are Editing, get todoitem fields from Main and set the Detail views with it
-        intent = getIntent();
-        ToDo mToDo = (ToDo) intent.getSerializableExtra(MainActivity.TODOITEM);
-        if (mToDo != null) {
-            mTodoTitle.setText(mToDo.getTitle()); //Set title in detail view
+        Intent intent = getIntent();
+        //mToDo = (ToDo) intent.getSerializableExtra(MainActivity.TODOITEM);
+        String title = intent.getStringExtra("title");
+        String note = intent.getStringExtra("note");
+        mTodoTitle.setText(title);
+        mTodoNote.setText(note);
 
-            switch (mToDo.getPriority()) { //Set priority in detail view
-                case MainActivity.TODAY:
-                    if (mPriorityToday != null) {
-                        mPriorityToday.setChecked(true);
-                    }
-                    break;
-                case MainActivity.SOON:
-                    if (mPrioritySoon != null) {
-                        mPrioritySoon.setChecked(true);
-                    }
-                    break;
-                case MainActivity.LATER:
-                    if (mPriorityLater != null) {
-                        mPriorityLater.setChecked(true);
-                    }
-            }
-        }
+        // if (mToDo != null) {
+        //     mTodoTitle.setText(mToDo.getTitle()); //Set title in detail view
+        //     mTodoNote.setText(mToDo.getNote());   //Set note in detail view
+        //     switch (mToDo.getPriority()) {        //Set priority in detail view
+        //         case MainActivity.TODAY:
+        //             if (mPriorityToday != null) {
+        //                 mPriorityToday.setChecked(true);
+        //             }
+        //             break;
+        //         case MainActivity.SOON:
+        //             if (mPrioritySoon != null) {
+        //                 mPrioritySoon.setChecked(true);
+        //             }
+        //             break;
+        //         case MainActivity.LATER:
+        //             if (mPriorityLater != null) {
+        //                 mPriorityLater.setChecked(true);
+        //             }
+        //             break;
+        //     }
+        // }
 
         // SAVE our todoitem
         FloatingActionButton save_todo_fab = (FloatingActionButton) findViewById(R.id.fab_save_todo);
@@ -83,6 +88,7 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MainActivity.class);
                 String title = mTodoTitle.getText().toString();
+                String note = mTodoNote.getText().toString();
                 String priority = null;
                 if (mPriorityToday.isChecked()) {
                     priority = mPriorityToday.getText().toString();
@@ -92,14 +98,28 @@ public class DetailActivity extends AppCompatActivity {
                     priority = mPriorityLater.getText().toString();
                 }
 
-                ToDo todo = new ToDo(title, priority);
-                TodoDbHelper dbhelper = TodoDbHelper.getsInstance(v.getContext());
-                dbhelper.insertTodo(todo);
+                ToDoDAO dao = new ToDoDAO(v.getContext());
+                ToDo toDo = new ToDo(title, note, priority);
+                dao.insert(toDo);
+                setResult(RESULT_OK, intent);
                 startActivity(intent);
+                finish();
+
+                //if (intent.getAction() == ACTION_EDIT) {
+                //mToDo.setTitle(title);
+                //mToDo.setNote(note);
+                //mToDo.setPriority(priority);
+                //dao.update(mToDo);
+                //intent.putExtra("Todo", mToDo);
+                //setResult(RESULT_OK, intent);
+                //finish();
+                //} else {
+                //    ToDo toDo = new ToDo(title, note, priority);
+                //    dao.insert(toDo);
+                //    finish();
+                //}
             }
         });
-
-
     }
 
     // Set todoitem Priority
@@ -124,7 +144,6 @@ public class DetailActivity extends AppCompatActivity {
                 }
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -163,7 +182,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public static Intent getActionIntent(Context context, ToDo toDo, String action) {
-        intent = new Intent(context, DetailActivity.class);
+        Intent intent = new Intent(context, DetailActivity.class);
         intent.setAction(action);
         intent.putExtra(MainActivity.TODOITEM, toDo);
         return intent;

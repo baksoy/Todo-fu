@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         TodoDbHelper dbHelper = TodoDbHelper.getsInstance(this);
 
         // Our Todoo list to be displayed on the Main Screen
-        List<ToDo> toDoList = new ArrayList<>();
+        final List<ToDo> toDoList = new ArrayList<>();
 
         // Grab all our Todoo items from the db and append it to our display list
         List<ToDo> result = dbHelper.getAllPosts();
