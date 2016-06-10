@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TODAY = "Today";
     public static final String SOON = "Soon";
     public static final String LATER = "Later";
+    public static final String ACTION_EDIT = "edit_todoitem";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

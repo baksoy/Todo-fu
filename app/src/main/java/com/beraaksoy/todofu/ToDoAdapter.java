@@ -72,9 +72,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
-//                    Intent intent = DetailActivity.getActionIntent(context, mToDoList.get(getAdapterPosition()), DetailActivity.ACTION_EDIT);
-                    Intent intent = new Intent(context, DetailActivity.class);
-                    intent.putExtra(MainActivity.TODOITEM, mToDoList.get(getAdapterPosition()));
+                    Intent intent = DetailActivity.getActionIntent(context, mToDoList.get(getAdapterPosition()), MainActivity.ACTION_EDIT);
                     context.startActivity(intent);
                 }
             });

@@ -1,5 +1,6 @@
 package com.beraaksoy.todofu;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import android.widget.Toast;
 public class DetailActivity extends AppCompatActivity {
 
     private static final String TAG = "DetailActivity";
-    public static final String ACTION_EDIT = "update_todoitem";
     private EditText mTodoTitle;
     private EditText mTodoNote;
     private RadioButton mPriorityToday;
@@ -32,13 +32,10 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
         // Adding Toolbar to Main screen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // Receive our Serializable ToDoItem Object
-        Intent intent = getIntent();
-        mToDo = (ToDo) intent.getSerializableExtra(MainActivity.TODOITEM);
 
         // Adding menu icon to Toolbar
         ActionBar supportActionBar = getSupportActionBar();
@@ -54,33 +51,16 @@ public class DetailActivity extends AppCompatActivity {
         mPrioritySoon = (RadioButton) findViewById(R.id.radioSoon);
         mPriorityLater = (RadioButton) findViewById(R.id.radioLater);
 
-        // Edit mode
-        if (mToDo != null) {
-            mTodoTitle.setText(mToDo.getTitle()); //Set title in detail view
-            mTodoNote.setText(mToDo.getNote());   //Set note in detail view
-            Log.d(TAG, "Id: " + mToDo.get_id());
-            Log.d(TAG, "Title: " + mToDo.getTitle());
-            Log.d(TAG, "Note: " + mToDo.getNote());
-            Log.d(TAG, "Priority: " + mToDo.getPriority());
-            switch (mToDo.getPriority()) {        //Set priority in detail view
-                case MainActivity.TODAY:
-                    if (mPriorityToday != null) {
-                        mPriorityToday.setChecked(true);
-                    }
-                    break;
-                case MainActivity.SOON:
-                    if (mPrioritySoon != null) {
-                        mPrioritySoon.setChecked(true);
-                    }
-                    break;
-                case MainActivity.LATER:
-                    if (mPriorityLater != null) {
-                        mPriorityLater.setChecked(true);
-                    }
-                    break;
+        // Receive our Serializable ToDoItem Object
+        Intent intent = getIntent();
+        mToDo = (ToDo) intent.getSerializableExtra(MainActivity.TODOITEM);
+        if (intent.getAction() != null) {
+            if (intent.getAction().equals(MainActivity.ACTION_EDIT)) {
+                setEditMode();
+                Log.d(TAG, "Received: " + MainActivity.ACTION_EDIT);
             }
         }
-
+        
         // SAVE our todoitem
         FloatingActionButton save_todo_fab = (FloatingActionButton) findViewById(R.id.fab_save_todo);
         assert save_todo_fab != null;
@@ -107,6 +87,35 @@ public class DetailActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    // We are in Edit mode
+    private void setEditMode() {
+        if (mToDo != null) {
+            mTodoTitle.setText(mToDo.getTitle()); //Set title in detail view
+            mTodoNote.setText(mToDo.getNote());   //Set note in detail view
+            Log.d(TAG, "Id: " + mToDo.get_id());
+            Log.d(TAG, "Title: " + mToDo.getTitle());
+            Log.d(TAG, "Note: " + mToDo.getNote());
+            Log.d(TAG, "Priority: " + mToDo.getPriority());
+            switch (mToDo.getPriority()) {        //Set priority in detail view
+                case MainActivity.TODAY:
+                    if (mPriorityToday != null) {
+                        mPriorityToday.setChecked(true);
+                    }
+                    break;
+                case MainActivity.SOON:
+                    if (mPrioritySoon != null) {
+                        mPrioritySoon.setChecked(true);
+                    }
+                    break;
+                case MainActivity.LATER:
+                    if (mPriorityLater != null) {
+                        mPriorityLater.setChecked(true);
+                    }
+                    break;
+            }
+        }
     }
 
     // Set todoitem Priority
@@ -168,11 +177,10 @@ public class DetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    public static Intent getActionIntent(Context context, ToDo toDo, String action) {
-//        Intent intent = new Intent(context, DetailActivity.class);
-//        intent.setAction(action);
-//        intent.putExtra(MainActivity.TODOITEM, toDo);
-//        return intent;
-//    }
-
+    public static Intent getActionIntent(Context context, ToDo toDo, String action) {
+        Intent intent = new Intent(context, DetailActivity.class);
+        intent.setAction(action);
+        intent.putExtra(MainActivity.TODOITEM, toDo);
+        return intent;
+    }
 }
