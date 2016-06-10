@@ -1,6 +1,5 @@
 package com.beraaksoy.todofu;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,6 +36,10 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Receive our Serializable ToDoItem Object
+        Intent intent = getIntent();
+        mToDo = (ToDo) intent.getSerializableExtra(MainActivity.TODOITEM);
+
         // Adding menu icon to Toolbar
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
@@ -50,35 +54,32 @@ public class DetailActivity extends AppCompatActivity {
         mPrioritySoon = (RadioButton) findViewById(R.id.radioSoon);
         mPriorityLater = (RadioButton) findViewById(R.id.radioLater);
 
-        // EDIT - If we are Editing, get todoitem fields from Main and set the Detail views with it
-        Intent intent = getIntent();
-        //mToDo = (ToDo) intent.getSerializableExtra(MainActivity.TODOITEM);
-        String title = intent.getStringExtra("title");
-        String note = intent.getStringExtra("note");
-        mTodoTitle.setText(title);
-        mTodoNote.setText(note);
-
-        // if (mToDo != null) {
-        //     mTodoTitle.setText(mToDo.getTitle()); //Set title in detail view
-        //     mTodoNote.setText(mToDo.getNote());   //Set note in detail view
-        //     switch (mToDo.getPriority()) {        //Set priority in detail view
-        //         case MainActivity.TODAY:
-        //             if (mPriorityToday != null) {
-        //                 mPriorityToday.setChecked(true);
-        //             }
-        //             break;
-        //         case MainActivity.SOON:
-        //             if (mPrioritySoon != null) {
-        //                 mPrioritySoon.setChecked(true);
-        //             }
-        //             break;
-        //         case MainActivity.LATER:
-        //             if (mPriorityLater != null) {
-        //                 mPriorityLater.setChecked(true);
-        //             }
-        //             break;
-        //     }
-        // }
+        // Edit mode
+        if (mToDo != null) {
+            mTodoTitle.setText(mToDo.getTitle()); //Set title in detail view
+            mTodoNote.setText(mToDo.getNote());   //Set note in detail view
+            Log.d(TAG, "Id: " + mToDo.get_id());
+            Log.d(TAG, "Title: " + mToDo.getTitle());
+            Log.d(TAG, "Note: " + mToDo.getNote());
+            Log.d(TAG, "Priority: " + mToDo.getPriority());
+            switch (mToDo.getPriority()) {        //Set priority in detail view
+                case MainActivity.TODAY:
+                    if (mPriorityToday != null) {
+                        mPriorityToday.setChecked(true);
+                    }
+                    break;
+                case MainActivity.SOON:
+                    if (mPrioritySoon != null) {
+                        mPrioritySoon.setChecked(true);
+                    }
+                    break;
+                case MainActivity.LATER:
+                    if (mPriorityLater != null) {
+                        mPriorityLater.setChecked(true);
+                    }
+                    break;
+            }
+        }
 
         // SAVE our todoitem
         FloatingActionButton save_todo_fab = (FloatingActionButton) findViewById(R.id.fab_save_todo);
@@ -104,20 +105,6 @@ public class DetailActivity extends AppCompatActivity {
                 setResult(RESULT_OK, intent);
                 startActivity(intent);
                 finish();
-
-                //if (intent.getAction() == ACTION_EDIT) {
-                //mToDo.setTitle(title);
-                //mToDo.setNote(note);
-                //mToDo.setPriority(priority);
-                //dao.update(mToDo);
-                //intent.putExtra("Todo", mToDo);
-                //setResult(RESULT_OK, intent);
-                //finish();
-                //} else {
-                //    ToDo toDo = new ToDo(title, note, priority);
-                //    dao.insert(toDo);
-                //    finish();
-                //}
             }
         });
     }
@@ -181,11 +168,11 @@ public class DetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static Intent getActionIntent(Context context, ToDo toDo, String action) {
-        Intent intent = new Intent(context, DetailActivity.class);
-        intent.setAction(action);
-        intent.putExtra(MainActivity.TODOITEM, toDo);
-        return intent;
-    }
+//    public static Intent getActionIntent(Context context, ToDo toDo, String action) {
+//        Intent intent = new Intent(context, DetailActivity.class);
+//        intent.setAction(action);
+//        intent.putExtra(MainActivity.TODOITEM, toDo);
+//        return intent;
+//    }
 
 }

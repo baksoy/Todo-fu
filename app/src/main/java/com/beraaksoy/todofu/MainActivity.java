@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
         final List<ToDo> toDoList = new ArrayList<>();
 
         // Grab all our Todoo items from the db and append it to our display list
-        List<ToDo> result = dbHelper.getAllPosts();
+        ToDoDAO dao = new ToDoDAO(this);
+        List<ToDo> result = dao.list();
         for (ToDo toDo : result) {
             toDoList.add(toDo);
         }
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // ADD A TODOO ITEM
-        FloatingActionButton add_place_fab = (FloatingActionButton) findViewById(R.id.fab_save_todo);
+        FloatingActionButton add_place_fab = (FloatingActionButton) findViewById(R.id.fab_add_todo);
         assert add_place_fab != null;
         add_place_fab.setOnClickListener(new View.OnClickListener() {
             @Override

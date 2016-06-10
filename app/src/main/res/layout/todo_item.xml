@@ -16,7 +16,7 @@
         android:layout_weight="14"
         android:gravity="center|left"
         android:text="Todo item goes here"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/radioToday"
@@ -25,8 +25,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_gravity="center"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="@dimen/md_keylines"
+        android:layout_marginRight="@dimen/md_keylines"
         android:layout_weight="2"
         android:gravity="center"
         android:textColor="#FFFFFF"
