@@ -1,7 +1,6 @@
 package com.beraaksoy.todofu;
 
 import java.io.Serializable;
-import java.util.Calendar;
 
 /**
  * Created by beraaksoy on 6/6/16.
@@ -10,20 +9,20 @@ public class ToDo implements Serializable {
     Long id;
     String title;
     String note;
-    Calendar date;
+    String date;
     String priority; // today, soon, later
     //String status; // done, pending
 
-    public ToDo(String title, String note, String priority) {
-        this(null, title, note, priority);
+    public ToDo(String title, String note, String date, String priority) {
+        this(null, title, note, date, priority);
     }
 
-    public ToDo(Long id, String title, String note, String priority) {
+    public ToDo(Long id, String title, String note, String date, String priority) {
         setId(id);
         setTitle(title);
         setNote(note);
+        setDate(date);
         setPriority(priority);
-        setDate(Calendar.getInstance());
     }
 
     public void setId(Long id) {
@@ -42,7 +41,7 @@ public class ToDo implements Serializable {
         return note;
     }
 
-    public Calendar getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -58,7 +57,7 @@ public class ToDo implements Serializable {
         this.note = note;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

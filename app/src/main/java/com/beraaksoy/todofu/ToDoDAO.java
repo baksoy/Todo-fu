@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -29,18 +27,15 @@ public class ToDoDAO {
         ContentValues values = new ContentValues();
         values.put(TodoDbHelper.TodoTableColumns.TODO_TITLE, toDo.getTitle());
         values.put(TodoDbHelper.TodoTableColumns.TODO_NOTE, toDo.getNote());
-        values.put(TodoDbHelper.TodoTableColumns.TODO_DATE, (toDo.getDate().getTimeInMillis() / 1000));
+        values.put(TodoDbHelper.TodoTableColumns.TODO_DATE, (toDo.getDate()));
         values.put(TodoDbHelper.TodoTableColumns.TODO_PRIORITY, toDo.getPriority());
         long recordId = db.insert(TodoDbHelper.Tables.TODO_TABLE, null, values);
         Log.d(TAG, "************** RECORD INSERTED ****************");
         Log.d(TAG, "ID: " + recordId);
         Log.d(TAG, "Title: " + values.get(TodoDbHelper.TodoTableColumns.TODO_TITLE));
         Log.d(TAG, "Note: " + values.get(TodoDbHelper.TodoTableColumns.TODO_NOTE));
+        Log.d(TAG, "Date: " + values.get(TodoDbHelper.TodoTableColumns.TODO_DATE));
         Log.d(TAG, "Priority: " + values.get(TodoDbHelper.TodoTableColumns.TODO_PRIORITY));
-        Log.d(TAG, "Date: "
-                + toDo.getDate().get(Calendar.DAY_OF_MONTH) + "/"
-                + toDo.getDate().get(Calendar.MONTH) + "/"
-                + toDo.getDate().get(Calendar.YEAR));
     }
 
     // Update
@@ -66,6 +61,7 @@ public class ToDoDAO {
         ContentValues values = new ContentValues();
         values.put(TodoDbHelper.TodoTableColumns.TODO_TITLE, toDo.getTitle());
         values.put(TodoDbHelper.TodoTableColumns.TODO_NOTE, toDo.getNote());
+        values.put(TodoDbHelper.TodoTableColumns.TODO_DATE, toDo.getDate());
         values.put(TodoDbHelper.TodoTableColumns.TODO_PRIORITY, toDo.getPriority());
 
         String selection = TodoDbHelper.TodoTableColumns.TODO_ID + " = ?";
@@ -125,11 +121,12 @@ public class ToDoDAO {
         while (c.moveToNext()) {
             String title = c.getString(c.getColumnIndex(TodoDbHelper.TodoTableColumns.TODO_TITLE));
             String note = c.getString(c.getColumnIndex(TodoDbHelper.TodoTableColumns.TODO_NOTE));
-            Calendar date = new GregorianCalendar();
-            date.setTimeInMillis(c.getLong(c.getColumnIndex(TodoDbHelper.TodoTableColumns.TODO_DATE)) * 1000);
+            String date = c.getString(c.getColumnIndex(TodoDbHelper.TodoTableColumns.TODO_DATE));
+            //Calendar date = new GregorianCalendar();
+            //date.setTimeInMillis(c.getLong(c.getColumnIndex(TodoDbHelper.TodoTableColumns.TODO_DATE)) * 1000);
             String priority = c.getString(c.getColumnIndex(TodoDbHelper.TodoTableColumns.TODO_PRIORITY));
             long id = c.getLong(c.getColumnIndex(TodoDbHelper.TodoTableColumns.TODO_ID));
-            todoList.add(new ToDo(id, title, note, priority));
+            todoList.add(new ToDo(id, title, note, date, priority));
         }
         Log.d(TAG, "TodoItems Listed: " + todoList.size());
         c.close();

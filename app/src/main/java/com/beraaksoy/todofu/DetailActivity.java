@@ -90,6 +90,7 @@ public class DetailActivity extends AppCompatActivity
                 ToDoDAO dao = new ToDoDAO(v.getContext());
                 String title = getTitleString();
                 String note = getNoteString();
+                String date = getDateString();
                 String priority = getPriorityString();
 
                 // UPDATE if we get an intent to Update through intent.setAction
@@ -99,6 +100,7 @@ public class DetailActivity extends AppCompatActivity
                         mToDo.setId(id);
                         mToDo.setTitle(title);
                         mToDo.setNote(note);
+                        mToDo.setDate(date);
                         mToDo.setPriority(priority);
                         if (isValid()) {
                             dao.update(mToDo);
@@ -110,7 +112,7 @@ public class DetailActivity extends AppCompatActivity
                     }
                 } else { // Otherwise, it's a NEW todoitem
                     if (isValid()) {
-                        ToDo toDo = new ToDo(title, note, priority);
+                        ToDo toDo = new ToDo(title, note, date, priority);
                         dao.insert(toDo);
                         startActivity(mainActivityIntent);
                         finish();
@@ -137,13 +139,18 @@ public class DetailActivity extends AppCompatActivity
     }
 
     @NonNull
+    private String getTitleString() {
+        return mTodoTitle.getText().toString();
+    }
+
+    @NonNull
     private String getNoteString() {
         return mTodoNote.getText().toString();
     }
 
     @NonNull
-    private String getTitleString() {
-        return mTodoTitle.getText().toString();
+    private String getDateString() {
+        return mTodoDate.getText().toString();
     }
 
     private boolean isValid() {
@@ -155,9 +162,11 @@ public class DetailActivity extends AppCompatActivity
         if (mToDo != null) {
             mTodoTitle.setText(mToDo.getTitle()); //Set title in detail view
             mTodoNote.setText(mToDo.getNote());   //Set note in detail view
+            mTodoDate.setText(mToDo.getDate());   //Set note in detail view
             Log.d(TAG, "Id: " + mToDo.getId());
             Log.d(TAG, "Title: " + mToDo.getTitle());
             Log.d(TAG, "Note: " + mToDo.getNote());
+            Log.d(TAG, "Note: " + mToDo.getDate());
             Log.d(TAG, "Priority: " + mToDo.getPriority());
             switch (mToDo.getPriority()) {        //Set priority in detail view
                 case MainActivity.TODAY:
