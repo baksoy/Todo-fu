@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -27,6 +28,7 @@ public class DetailActivity extends AppCompatActivity {
     private RadioButton mPrioritySoon;
     private RadioButton mPriorityLater;
     private ToDo mToDo; // Our Serializable ToDoItem
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,49 +54,85 @@ public class DetailActivity extends AppCompatActivity {
         mPriorityLater = (RadioButton) findViewById(R.id.radioLater);
 
         // Receive our Serializable ToDoItem Object
-        Intent intent = getIntent();
+        intent = getIntent();
         mToDo = (ToDo) intent.getSerializableExtra(MainActivity.TODOITEM);
         if (intent.getAction() != null) {
             if (intent.getAction().equals(MainActivity.ACTION_EDIT)) {
                 setEditMode();
-                Log.d(TAG, "Received: " + MainActivity.ACTION_EDIT);
+//
+//
+//                Log.d(TAG, "Received Id: " + id);
+//                Log.d(TAG, "Received Title: " + title);
+//                Log.d(TAG, "Received Title: " + note);
+//                Log.d(TAG, "Received Title: " + priority);
+
+
             }
         }
-        
+
         // SAVE our todoitem
         FloatingActionButton save_todo_fab = (FloatingActionButton) findViewById(R.id.fab_save_todo);
         assert save_todo_fab != null;
         save_todo_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), MainActivity.class);
-                String title = mTodoTitle.getText().toString();
-                String note = mTodoNote.getText().toString();
-                String priority = null;
-                if (mPriorityToday.isChecked()) {
-                    priority = mPriorityToday.getText().toString();
-                } else if (mPrioritySoon.isChecked()) {
-                    priority = mPrioritySoon.getText().toString();
-                } else {
-                    priority = mPriorityLater.getText().toString();
-                }
-
+                Intent mainActivityIntent = new Intent(v.getContext(), MainActivity.class);
                 ToDoDAO dao = new ToDoDAO(v.getContext());
-                ToDo toDo = new ToDo(title, note, priority);
-                dao.insert(toDo);
-                setResult(RESULT_OK, intent);
-                startActivity(intent);
+                if (intent.getAction() != null) {
+                    if (intent.getAction().equals(MainActivity.ACTION_EDIT)) {
+                        //setEditMode();
+                        Long id = mToDo.getId();
+                        String title = getTitleString();
+                        String note = getNoteString();
+                        String priority = getPriorityString();
+                        mToDo.setId(id);
+                        mToDo.setTitle(title);
+                        mToDo.setNote(note);
+                        mToDo.setPriority(priority);
+                        dao.update(mToDo);
+                    }
+                } else {
+                    String title = getTitleString();
+                    String note = getNoteString();
+                    String priority = getPriorityString();
+                    ToDo toDo = new ToDo(title, note, priority);
+                    dao.insert(toDo);
+                }
+                startActivity(mainActivityIntent);
                 finish();
             }
         });
     }
 
-    // We are in Edit mode
+    @NonNull
+    private String getPriorityString() {
+        String priority = null;
+        if (mPriorityToday.isChecked()) {
+            priority = mPriorityToday.getText().toString();
+        } else if (mPrioritySoon.isChecked()) {
+            priority = mPrioritySoon.getText().toString();
+        } else {
+            priority = mPriorityLater.getText().toString();
+        }
+        return priority;
+    }
+
+    @NonNull
+    private String getNoteString() {
+        return mTodoNote.getText().toString();
+    }
+
+    @NonNull
+    private String getTitleString() {
+        return mTodoTitle.getText().toString();
+    }
+
+    // Set Edit mode
     private void setEditMode() {
         if (mToDo != null) {
             mTodoTitle.setText(mToDo.getTitle()); //Set title in detail view
             mTodoNote.setText(mToDo.getNote());   //Set note in detail view
-            Log.d(TAG, "Id: " + mToDo.get_id());
+            Log.d(TAG, "Id: " + mToDo.getId());
             Log.d(TAG, "Title: " + mToDo.getTitle());
             Log.d(TAG, "Note: " + mToDo.getNote());
             Log.d(TAG, "Priority: " + mToDo.getPriority());

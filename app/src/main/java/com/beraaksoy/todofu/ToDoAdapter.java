@@ -3,6 +3,7 @@ package com.beraaksoy.todofu;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
                 public void onClick(View v) {
                     Context context = v.getContext();
                     Intent intent = DetailActivity.getActionIntent(context, mToDoList.get(getAdapterPosition()), MainActivity.ACTION_EDIT);
+                    Log.d("Position: ", mToDoList.get(getAdapterPosition()).getId().toString());
                     context.startActivity(intent);
                 }
             });

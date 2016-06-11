@@ -7,37 +7,31 @@ import java.util.Calendar;
  * Created by beraaksoy on 6/6/16.
  */
 public class ToDo implements Serializable {
-    int _id;
+    Long id;
     String title;
     String note;
     Calendar date;
     String priority; // today, soon, later
     //String status; // done, pending
 
-    public ToDo(String title, String priority) {
-        this.title = title;
-        this.priority = priority;
-        this.date = Calendar.getInstance();
-    }
-
     public ToDo(String title, String note, String priority) {
-        this.title = title;
-        this.note = note;
-        this.date = Calendar.getInstance();
-        this.priority = priority;
+        this(null, title, note, priority);
     }
 
-    public ToDo(int _id, String title, String note, Calendar date, String priority) {
-        this._id = _id;
-        this.title = title;
-        this.note = note;
-        this.date = date;
-        this.priority = priority;
+    public ToDo(Long id, String title, String note, String priority) {
+        setId(id);
+        setTitle(title);
+        setNote(note);
+        setPriority(priority);
+        setDate(Calendar.getInstance());
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public int get_id() {
-        return _id;
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -62,6 +56,10 @@ public class ToDo implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public void setDate(Calendar date) {
+        this.date = date;
     }
 
     public void setPriority(String priority) {

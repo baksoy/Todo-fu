@@ -44,24 +44,49 @@ public class ToDoDAO {
     }
 
     // Update
+//    public void update(ToDo toDo) {
+//        TodoDbHelper helper = TodoDbHelper.getsInstance(context);
+//        SQLiteDatabase db = helper.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+////        values.put(TodoDbHelper.TodoTableColumns.TODO_ID, toDo.getId());
+//        values.put(TodoDbHelper.TodoTableColumns.TODO_TITLE, toDo.getTitle());
+//        values.put(TodoDbHelper.TodoTableColumns.TODO_NOTE, toDo.getNote());
+//        values.put(TodoDbHelper.TodoTableColumns.TODO_PRIORITY, toDo.getPriority());
+//
+//        String selection = TodoDbHelper.TodoTableColumns.TODO_ID + " =?";
+//        String[] selectionArgs = {String.valueOf(toDo.getId())};
+//        int rowsAffected = db.update(TodoDbHelper.Tables.TODO_TABLE, values, selection, selectionArgs);
+//        Log.d(TAG, "Updated Rowcount: " + rowsAffected);
+//    }
+
     public void update(ToDo toDo) {
         TodoDbHelper helper = TodoDbHelper.getsInstance(context);
         SQLiteDatabase db = helper.getWritableDatabase();
+
         ContentValues values = new ContentValues();
         values.put(TodoDbHelper.TodoTableColumns.TODO_TITLE, toDo.getTitle());
         values.put(TodoDbHelper.TodoTableColumns.TODO_NOTE, toDo.getNote());
         values.put(TodoDbHelper.TodoTableColumns.TODO_PRIORITY, toDo.getPriority());
 
-        String selection = TodoDbHelper.TodoTableColumns.TODO_ID + " =?";
-        String[] selectionArgs = {String.valueOf(toDo.get_id())};
-        int rowsAffected = db.update(TodoDbHelper.Tables.TODO_TABLE, values, selection, selectionArgs);
-        Log.d(TAG, "Updated Rowcount: " + rowsAffected);
+        String selection = TodoDbHelper.TodoTableColumns.TODO_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(toDo.getId())};
+
+        int count = db.update(
+                TodoDbHelper.Tables.TODO_TABLE,
+                values,
+                selection,
+                selectionArgs);
+
+        Log.d(TAG, "Updated Rowcount: " + TodoDbHelper.TodoTableColumns.TODO_ID);
+        Log.d(TAG, "Updated RowId: " + count);
+
     }
+
 
     // Delete
     public void delete(ToDo toDo) {
         String selection = TodoDbHelper.TodoTableColumns.TODO_ID + " =?";
-        String[] selectionArgs = {String.valueOf(toDo.get_id())};
+        String[] selectionArgs = {String.valueOf(toDo.getId())};
         TodoDbHelper helper = TodoDbHelper.getsInstance(context);
         SQLiteDatabase db = helper.getWritableDatabase();
         int rowsAffected = db.delete(TodoDbHelper.Tables.TODO_TABLE, selection, selectionArgs);
@@ -103,8 +128,8 @@ public class ToDoDAO {
             Calendar date = new GregorianCalendar();
             date.setTimeInMillis(c.getLong(c.getColumnIndex(TodoDbHelper.TodoTableColumns.TODO_DATE)) * 1000);
             String priority = c.getString(c.getColumnIndex(TodoDbHelper.TodoTableColumns.TODO_PRIORITY));
-
-            todoList.add(new ToDo(title, note, priority));
+            long id = c.getLong(c.getColumnIndex(TodoDbHelper.TodoTableColumns.TODO_ID));
+            todoList.add(new ToDo(id, title, note, priority));
         }
         Log.d(TAG, "TodoItems Listed: " + todoList.size());
         c.close();
