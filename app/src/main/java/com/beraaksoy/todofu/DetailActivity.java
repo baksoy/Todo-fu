@@ -59,14 +59,6 @@ public class DetailActivity extends AppCompatActivity {
         if (intent.getAction() != null) {
             if (intent.getAction().equals(MainActivity.ACTION_EDIT)) {
                 setEditMode();
-//
-//
-//                Log.d(TAG, "Received Id: " + id);
-//                Log.d(TAG, "Received Title: " + title);
-//                Log.d(TAG, "Received Title: " + note);
-//                Log.d(TAG, "Received Title: " + priority);
-
-
             }
         }
 
@@ -78,23 +70,21 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mainActivityIntent = new Intent(v.getContext(), MainActivity.class);
                 ToDoDAO dao = new ToDoDAO(v.getContext());
+                String title = getTitleString();
+                String note = getNoteString();
+                String priority = getPriorityString();
+
+                // UPDATE if we get an intent to Update through intent.setAction
                 if (intent.getAction() != null) {
                     if (intent.getAction().equals(MainActivity.ACTION_EDIT)) {
-                        //setEditMode();
                         Long id = mToDo.getId();
-                        String title = getTitleString();
-                        String note = getNoteString();
-                        String priority = getPriorityString();
                         mToDo.setId(id);
                         mToDo.setTitle(title);
                         mToDo.setNote(note);
                         mToDo.setPriority(priority);
                         dao.update(mToDo);
                     }
-                } else {
-                    String title = getTitleString();
-                    String note = getNoteString();
-                    String priority = getPriorityString();
+                } else { // Otherwise, it's a NEW todoitem
                     ToDo toDo = new ToDo(title, note, priority);
                     dao.insert(toDo);
                 }
