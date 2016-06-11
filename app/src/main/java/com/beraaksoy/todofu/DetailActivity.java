@@ -15,11 +15,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class DetailActivity extends AppCompatActivity {
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+
+public class DetailActivity extends AppCompatActivity
+        implements CalendarDatePickerDialogFragment.OnDateSetListener {
 
     private static final String TAG = "DetailActivity";
     private EditText mTodoTitle;
@@ -27,6 +32,7 @@ public class DetailActivity extends AppCompatActivity {
     private RadioButton mPriorityToday;
     private RadioButton mPrioritySoon;
     private RadioButton mPriorityLater;
+    private TextView mTodoDate;
     private ToDo mToDo; // Our Serializable ToDoItem
     Intent intent;
 
@@ -52,6 +58,18 @@ public class DetailActivity extends AppCompatActivity {
         mPriorityToday = (RadioButton) findViewById(R.id.radioToday);
         mPrioritySoon = (RadioButton) findViewById(R.id.radioSoon);
         mPriorityLater = (RadioButton) findViewById(R.id.radioLater);
+        mTodoDate = (TextView) findViewById(R.id.todoItemDate);
+        Button button = (Button) findViewById(R.id.calendarButton);
+
+        button.setText(R.string.calendar_date_picker_set);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CalendarDatePickerDialogFragment cdp = new CalendarDatePickerDialogFragment()
+                        .setOnDateSetListener(DetailActivity.this);
+                cdp.show(getSupportFragmentManager(), "DATE_PICKER");
+            }
+        });
 
         // Receive our Serializable ToDoItem Object
         intent = getIntent();
@@ -224,7 +242,7 @@ public class DetailActivity extends AppCompatActivity {
                     break;
                 } else {
                     Toast.makeText(DetailActivity.this, "You haven't saved yet. Nothing to delete.", Toast.LENGTH_SHORT).show();
-                } 
+                }
 
         }
         return super.onOptionsItemSelected(item);
@@ -236,4 +254,69 @@ public class DetailActivity extends AppCompatActivity {
         intent.putExtra(MainActivity.TODOITEM, toDo);
         return intent;
     }
+
+    @Override
+    public void onResume() {
+        // Reattaching to the fragment
+        super.onResume();
+        CalendarDatePickerDialogFragment calendarDatePickerDialogFragment = (CalendarDatePickerDialogFragment) getSupportFragmentManager()
+                .findFragmentByTag("DATE_PICKER");
+        if (calendarDatePickerDialogFragment != null) {
+            calendarDatePickerDialogFragment.setOnDateSetListener(this);
+        }
+    }
+
+    @Override
+    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+        mTodoDate.setText(getString(R.string.calendar_date_picker_result_values,
+                getMonthFromInt(monthOfYear), // Month
+                dayOfMonth,                   // Day
+                year));                       // Year
+    }
+
+    public String getMonthFromInt(int num) {
+        String monthAbr;
+        switch (num) {
+            case 0:
+                monthAbr = "JAN";
+                break;
+            case 1:
+                monthAbr = "FEB";
+                break;
+            case 2:
+                monthAbr = "MARCH";
+                break;
+            case 3:
+                monthAbr = "APR";
+                break;
+            case 4:
+                monthAbr = "MAY";
+                break;
+            case 5:
+                monthAbr = "JUN";
+                break;
+            case 6:
+                monthAbr = "JUL";
+                break;
+            case 7:
+                monthAbr = "AUG";
+                break;
+            case 8:
+                monthAbr = "SEP";
+                break;
+            case 9:
+                monthAbr = "OCT";
+                break;
+            case 10:
+                monthAbr = "NOV";
+                break;
+            case 11:
+                monthAbr = "DEC";
+                break;
+            default:
+                return "Cannot determine month";
+        }
+        return monthAbr;
+    }
+
 }
