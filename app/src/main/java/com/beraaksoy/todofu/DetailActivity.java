@@ -197,7 +197,7 @@ public class DetailActivity extends AppCompatActivity {
             case R.id.action_delete_todo:
                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                 alertDialog.setTitle("Confirm Delete");
-                alertDialog.setMessage("Are you sure you want to delete this TodoFu?");
+                alertDialog.setMessage("Are you sure you want to delete this Todo Item?");
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -210,7 +210,11 @@ public class DetailActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(), "Todofu Deleted", Toast.LENGTH_SHORT).show();
+                                Intent mainActivityIntent = new Intent(DetailActivity.this, MainActivity.class);
+                                ToDoDAO dao = new ToDoDAO(DetailActivity.this);
+                                dao.delete(mToDo);
+                                Toast.makeText(getApplicationContext(), "Todo Item Deleted", Toast.LENGTH_SHORT).show();
+                                startActivity(mainActivityIntent);
                             }
                         }
                 );
