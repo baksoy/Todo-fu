@@ -195,31 +195,37 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete_todo:
-                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("Confirm Delete");
-                alertDialog.setMessage("Are you sure you want to delete this Todo Item?");
-                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+
+                if (mToDo != null) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                    alertDialog.setTitle("Confirm Delete");
+                    alertDialog.setMessage("Are you sure you want to delete this Todo Item?");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "CANCEL",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
                             }
-                        }
-                );
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent mainActivityIntent = new Intent(DetailActivity.this, MainActivity.class);
-                                ToDoDAO dao = new ToDoDAO(DetailActivity.this);
-                                dao.delete(mToDo);
-                                Toast.makeText(getApplicationContext(), "Todo Item Deleted", Toast.LENGTH_SHORT).show();
-                                startActivity(mainActivityIntent);
+                    );
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent mainActivityIntent = new Intent(DetailActivity.this, MainActivity.class);
+                                    ToDoDAO dao = new ToDoDAO(DetailActivity.this);
+                                    dao.delete(mToDo);
+                                    Toast.makeText(getApplicationContext(), "Todo item deleted!", Toast.LENGTH_SHORT).show();
+                                    startActivity(mainActivityIntent);
+                                }
                             }
-                        }
-                );
-                alertDialog.show();
-                break;
+                    );
+                    alertDialog.show();
+                    break;
+                } else {
+                    Toast.makeText(DetailActivity.this, "You haven't saved yet. Nothing to delete.", Toast.LENGTH_SHORT).show();
+                } 
+
         }
         return super.onOptionsItemSelected(item);
     }
