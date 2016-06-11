@@ -82,14 +82,25 @@ public class DetailActivity extends AppCompatActivity {
                         mToDo.setTitle(title);
                         mToDo.setNote(note);
                         mToDo.setPriority(priority);
-                        dao.update(mToDo);
+                        if (isValid()) {
+                            dao.update(mToDo);
+                            startActivity(mainActivityIntent);
+                            finish();
+                        } else {
+                            Toast.makeText(DetailActivity.this, "Title is required. Please enter valid data.", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } else { // Otherwise, it's a NEW todoitem
-                    ToDo toDo = new ToDo(title, note, priority);
-                    dao.insert(toDo);
+                    if (isValid()) {
+                        ToDo toDo = new ToDo(title, note, priority);
+                        dao.insert(toDo);
+                        startActivity(mainActivityIntent);
+                        finish();
+                    } else {
+                        Toast.makeText(DetailActivity.this, "Title is required. Please enter valid data.", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                startActivity(mainActivityIntent);
-                finish();
+
             }
         });
     }
@@ -115,6 +126,10 @@ public class DetailActivity extends AppCompatActivity {
     @NonNull
     private String getTitleString() {
         return mTodoTitle.getText().toString();
+    }
+
+    private boolean isValid() {
+        return mTodoTitle.getText().toString().length() != 0;
     }
 
     // Set Edit mode
