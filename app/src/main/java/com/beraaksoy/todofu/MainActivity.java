@@ -38,36 +38,33 @@ public class MainActivity extends AppCompatActivity {
             supportActionBar.setLogo(R.drawable.app_logo);
         }
 
-        RecyclerView toDoItems = (RecyclerView) findViewById(R.id.todoList);
+        RecyclerView todoRecyclerView = (RecyclerView) findViewById(R.id.todoList);
 
-        // Get a handle on our database
-        TodoDbHelper dbHelper = TodoDbHelper.getsInstance(this);
+        // Initialize our TodoList to be displayed on the Main Screen
+        final List<Todo> todoList = new ArrayList<>();
 
-        // Our Todoo list to be displayed on the Main Screen
-        final List<ToDo> toDoList = new ArrayList<>();
-
-        // Grab all our Todoo items from the db and append it to our display list
-        ToDoDAO dao = new ToDoDAO(this);
-        List<ToDo> result = dao.list();
-        for (ToDo toDo : result) {
-            toDoList.add(toDo);
+        // Grab all our TodoItems from the db and append it to our display list
+        TodoDAO dao = new TodoDAO(this);
+        List<Todo> result = dao.list();
+        for (Todo todoItem : result) {
+            todoList.add(todoItem);
         }
 
-        // Set our adapter to display our Todoo list
-        ToDoAdapter adapter = new ToDoAdapter(toDoList, this);
+        // Set our adapter to display our TodoList
+        TodoAdapter adapter = new TodoAdapter(todoList, this);
 
-        if (toDoItems != null) {
-            toDoItems.setLayoutManager(new LinearLayoutManager(this));
+        if (todoRecyclerView != null) {
+            todoRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             Drawable divider = getResources().getDrawable(R.drawable.item_divider);
-            toDoItems.addItemDecoration(new HorizontalDividerItemDecoration(divider));
+            todoRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration(divider));
         }
 
-        if (toDoItems != null) {
-            toDoItems.setAdapter(adapter);
+        if (todoRecyclerView != null) {
+            todoRecyclerView.setAdapter(adapter);
         }
 
 
-        // ADD A TODOO ITEM
+        // ADD A TODOITEM
         FloatingActionButton add_place_fab = (FloatingActionButton) findViewById(R.id.fab_add_todo);
         assert add_place_fab != null;
         add_place_fab.setOnClickListener(new View.OnClickListener() {

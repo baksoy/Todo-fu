@@ -8,10 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by beraaksoy on 6/7/16.
  */
 public class TodoDbHelper extends SQLiteOpenHelper {
-    private static final String TAG = "TodoDbHelper";
 
-    public static final String DATABASE_NAME = "todofu.db";
-    public static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "todofu.db";
+    private static final int DATABASE_VERSION = 1;
     private static TodoDbHelper sInstance;
 
     //Set Constructor to private and make calls via Singleton to avoid leaks.

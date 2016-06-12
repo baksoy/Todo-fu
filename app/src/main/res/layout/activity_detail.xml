@@ -55,11 +55,13 @@
             android:layout_weight="4"
             android:background="@android:color/transparent"
             android:fontFamily="sans-serif-regular"
-            android:gravity="left|center_vertical"
+            android:gravity="start|center_vertical"
             android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingStart="2dp"
             android:textAllCaps="false"
             android:textColor="@color/formTextColor"
-            android:textSize="22dp" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/todoItemDate"
@@ -107,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onTodoPriorityButtonClicked"
-            android:text="Today"
+            android:text="@string/today"
             android:textColor="@color/formTextColor"
             android:textSize="18sp" />
 
@@ -117,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onTodoPriorityButtonClicked"
-            android:text="Soon"
+            android:text="@string/soon"
             android:textColor="@color/formTextColor"
             android:textSize="18sp" />
 
@@ -127,7 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onTodoPriorityButtonClicked"
-            android:text="Later"
+            android:text="@string/later"
             android:textColor="@color/formTextColor"
             android:textSize="18sp" />
 

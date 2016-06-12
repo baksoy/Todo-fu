@@ -8,22 +8,16 @@
         android:id="@+id/todoItemTitle"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_weight="14"
-        android:gravity="center|left"
-        android:text="Todo item goes here"
+        android:gravity="center|start"
         android:textSize="18sp" />
 
     <TextView
         android:id="@+id/radioToday"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_gravity="center"
         android:layout_marginEnd="@dimen/md_keylines"
         android:layout_marginRight="@dimen/md_keylines"

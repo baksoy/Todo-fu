@@ -26,15 +26,15 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 public class DetailActivity extends AppCompatActivity
         implements CalendarDatePickerDialogFragment.OnDateSetListener {
 
-    private static final String TAG = "DetailActivity";
+    private static final String TAG = DetailActivity.class.getSimpleName();
     private EditText mTodoTitle;
     private EditText mTodoNote;
     private RadioButton mPriorityToday;
     private RadioButton mPrioritySoon;
     private RadioButton mPriorityLater;
     private TextView mTodoDate;
-    private ToDo mToDo; // Our Serializable ToDoItem
-    Intent intent;
+    private Todo mTodo; // Our Serializable TodoItem
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,7 @@ public class DetailActivity extends AppCompatActivity
         mTodoDate = (TextView) findViewById(R.id.todoItemDate);
         Button button = (Button) findViewById(R.id.calendarButton);
 
+        assert button != null;
         button.setText(R.string.calendar_date_picker_set);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,23 +72,23 @@ public class DetailActivity extends AppCompatActivity
             }
         });
 
-        // Receive our Serializable ToDoItem Object
+        // Receive our Serializable TodoItem Object
         intent = getIntent();
-        mToDo = (ToDo) intent.getSerializableExtra(MainActivity.TODOITEM);
+        mTodo = (Todo) intent.getSerializableExtra(MainActivity.TODOITEM);
         if (intent.getAction() != null) {
             if (intent.getAction().equals(MainActivity.ACTION_EDIT)) {
                 setEditMode();
             }
         }
 
-        // SAVE our todoitem
+        // SAVE our todoItem
         FloatingActionButton save_todo_fab = (FloatingActionButton) findViewById(R.id.fab_save_todo);
         assert save_todo_fab != null;
         save_todo_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent mainActivityIntent = new Intent(v.getContext(), MainActivity.class);
-                ToDoDAO dao = new ToDoDAO(v.getContext());
+                TodoDAO dao = new TodoDAO(v.getContext());
                 String title = getTitleString();
                 String note = getNoteString();
                 String date = getDateString();
@@ -96,14 +97,14 @@ public class DetailActivity extends AppCompatActivity
                 // UPDATE if we get an intent to Update through intent.setAction
                 if (intent.getAction() != null) {
                     if (intent.getAction().equals(MainActivity.ACTION_EDIT)) {
-                        Long id = mToDo.getId();
-                        mToDo.setId(id);
-                        mToDo.setTitle(title);
-                        mToDo.setNote(note);
-                        mToDo.setDate(date);
-                        mToDo.setPriority(priority);
+                        Long id = mTodo.getId();
+                        mTodo.setId(id);
+                        mTodo.setTitle(title);
+                        mTodo.setNote(note);
+                        mTodo.setDate(date);
+                        mTodo.setPriority(priority);
                         if (isValid()) {
-                            dao.update(mToDo);
+                            dao.update(mTodo);
                             startActivity(mainActivityIntent);
                             finish();
                         } else {
@@ -112,8 +113,8 @@ public class DetailActivity extends AppCompatActivity
                     }
                 } else { // Otherwise, it's a NEW todoitem
                     if (isValid()) {
-                        ToDo toDo = new ToDo(title, note, date, priority);
-                        dao.insert(toDo);
+                        Todo todoItem = new Todo(title, note, date, priority);
+                        dao.insert(todoItem);
                         startActivity(mainActivityIntent);
                         finish();
                     } else {
@@ -127,7 +128,7 @@ public class DetailActivity extends AppCompatActivity
 
     @NonNull
     private String getPriorityString() {
-        String priority = null;
+        String priority;
         if (mPriorityToday.isChecked()) {
             priority = mPriorityToday.getText().toString();
         } else if (mPrioritySoon.isChecked()) {
@@ -159,16 +160,16 @@ public class DetailActivity extends AppCompatActivity
 
     // Set Edit mode
     private void setEditMode() {
-        if (mToDo != null) {
-            mTodoTitle.setText(mToDo.getTitle()); //Set title in detail view
-            mTodoNote.setText(mToDo.getNote());   //Set note in detail view
-            mTodoDate.setText(mToDo.getDate());   //Set note in detail view
-            Log.d(TAG, "Id: " + mToDo.getId());
-            Log.d(TAG, "Title: " + mToDo.getTitle());
-            Log.d(TAG, "Note: " + mToDo.getNote());
-            Log.d(TAG, "Note: " + mToDo.getDate());
-            Log.d(TAG, "Priority: " + mToDo.getPriority());
-            switch (mToDo.getPriority()) {        //Set priority in detail view
+        if (mTodo != null) {
+            mTodoTitle.setText(mTodo.getTitle()); //Set title in detail view
+            mTodoNote.setText(mTodo.getNote());   //Set note in detail view
+            mTodoDate.setText(mTodo.getDate());   //Set note in detail view
+            Log.d(TAG, "Id: " + mTodo.getId());
+            Log.d(TAG, "Title: " + mTodo.getTitle());
+            Log.d(TAG, "Note: " + mTodo.getNote());
+            Log.d(TAG, "Note: " + mTodo.getDate());
+            Log.d(TAG, "Priority: " + mTodo.getPriority());
+            switch (mTodo.getPriority()) {        //Set priority in detail view
                 case MainActivity.TODAY:
                     if (mPriorityToday != null) {
                         mPriorityToday.setChecked(true);
@@ -223,7 +224,7 @@ public class DetailActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.action_delete_todo:
 
-                if (mToDo != null) {
+                if (mTodo != null) {
                     AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                     alertDialog.setTitle("Confirm Delete");
                     alertDialog.setMessage("Are you sure you want to delete this Todo Item?");
@@ -240,8 +241,8 @@ public class DetailActivity extends AppCompatActivity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Intent mainActivityIntent = new Intent(DetailActivity.this, MainActivity.class);
-                                    ToDoDAO dao = new ToDoDAO(DetailActivity.this);
-                                    dao.delete(mToDo);
+                                    TodoDAO dao = new TodoDAO(DetailActivity.this);
+                                    dao.delete(mTodo);
                                     Toast.makeText(getApplicationContext(), "Todo item deleted!", Toast.LENGTH_SHORT).show();
                                     startActivity(mainActivityIntent);
                                 }
@@ -257,10 +258,10 @@ public class DetailActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public static Intent getActionIntent(Context context, ToDo toDo, String action) {
+    public static Intent getActionIntent(Context context, String todoKey, Todo todoValue, String todoAction) {
         Intent intent = new Intent(context, DetailActivity.class);
-        intent.setAction(action);
-        intent.putExtra(MainActivity.TODOITEM, toDo);
+        intent.setAction(todoAction);
+        intent.putExtra(todoKey, todoValue);
         return intent;
     }
 
@@ -283,7 +284,7 @@ public class DetailActivity extends AppCompatActivity
                 year));                       // Year
     }
 
-    public String getMonthFromInt(int num) {
+    private String getMonthFromInt(int num) {
         String monthAbr;
         switch (num) {
             case 0:
@@ -293,7 +294,7 @@ public class DetailActivity extends AppCompatActivity
                 monthAbr = "FEB";
                 break;
             case 2:
-                monthAbr = "MARCH";
+                monthAbr = "MAR";
                 break;
             case 3:
                 monthAbr = "APR";

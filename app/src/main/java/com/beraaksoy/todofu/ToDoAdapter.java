@@ -15,27 +15,27 @@ import java.util.List;
 /**
  * Created by beraaksoy on 6/6/16.
  */
-public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
+public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder> {
 
-    List<ToDo> mToDoList = new ArrayList<>();
-    Context mContext;
+    private List<Todo> mTodoList = new ArrayList<>();
+    private final Context mContext;
 
-    public ToDoAdapter(List<ToDo> list, Context context) {
-        mToDoList = list;
+    public TodoAdapter(List<Todo> list, Context context) {
+        mTodoList = list;
         mContext = context;
     }
 
     @Override
-    public ToDoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View toDoItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item, parent, false);
-        return new ToDoViewHolder(toDoItemView);
+    public TodoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View todoItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item, parent, false);
+        return new TodoViewHolder(todoItemView);
     }
 
     @Override
-    public void onBindViewHolder(ToDoViewHolder holder, int position) {
-        ToDo toDo = mToDoList.get(position);
-        holder.itemTitleView.setText(toDo.getTitle());
-        holder.itemPriorityView.setText(toDo.getPriority());
+    public void onBindViewHolder(TodoViewHolder holder, int position) {
+        Todo todoItem = mTodoList.get(position);
+        holder.itemTitleView.setText(todoItem.getTitle());
+        holder.itemPriorityView.setText(todoItem.getPriority());
 
         switch (holder.itemPriorityView.getText().toString()) {
             case MainActivity.TODAY:
@@ -57,14 +57,14 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
     @Override
     public int getItemCount() {
-        return mToDoList.size();
+        return mTodoList.size();
     }
 
-    public class ToDoViewHolder extends RecyclerView.ViewHolder {
-        private TextView itemTitleView;
-        private TextView itemPriorityView;
+    public class TodoViewHolder extends RecyclerView.ViewHolder {
+        private final TextView itemTitleView;
+        private final TextView itemPriorityView;
 
-        public ToDoViewHolder(final View itemView) {
+        public TodoViewHolder(final View itemView) {
             super(itemView);
             itemTitleView = (TextView) itemView.findViewById(R.id.todoItemTitle);
             itemPriorityView = (TextView) itemView.findViewById(R.id.radioToday);
@@ -73,8 +73,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
-                    Intent intent = DetailActivity.getActionIntent(context, mToDoList.get(getAdapterPosition()), MainActivity.ACTION_EDIT);
-                    Log.d("Position: ", mToDoList.get(getAdapterPosition()).getId().toString());
+                    Intent intent = DetailActivity.getActionIntent(context, MainActivity.TODOITEM, mTodoList.get(getAdapterPosition()), MainActivity.ACTION_EDIT);
+                    Log.d("Position: ", mTodoList.get(getAdapterPosition()).getId().toString());
                     context.startActivity(intent);
                 }
             });

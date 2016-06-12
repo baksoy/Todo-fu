@@ -8,8 +8,8 @@ import android.view.View;
 /**
  * Created by beraaksoy on 6/7/16.
  */
-public class HorizontalDividerItemDecoration extends RecyclerView.ItemDecoration {
-    private Drawable divider;
+class HorizontalDividerItemDecoration extends RecyclerView.ItemDecoration {
+    private final Drawable divider;
 
 
     public HorizontalDividerItemDecoration(Drawable divider) {

@@ -6,4 +6,7 @@
     <string name="action_delete_todo">Delete</string>
     <string name="calendar_date_picker_set">Date</string>
     <string name="calendar_date_picker_result_values">%1$s/%2$s/%3$s</string>
+    <string name="today">Today</string>
+    <string name="soon">Soon</string>
+    <string name="later">Later</string>
 </resources>
