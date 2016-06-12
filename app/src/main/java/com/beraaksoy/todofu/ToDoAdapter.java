@@ -36,6 +36,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
         Todo todoItem = mTodoList.get(position);
         holder.itemTitleView.setText(todoItem.getTitle());
         holder.itemPriorityView.setText(todoItem.getPriority());
+        holder.itemDateView.setText(todoItem.getDate());
 
         switch (holder.itemPriorityView.getText().toString()) {
             case MainActivity.TODAY:
@@ -63,12 +64,13 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
     public class TodoViewHolder extends RecyclerView.ViewHolder {
         private final TextView itemTitleView;
         private final TextView itemPriorityView;
+        private final TextView itemDateView;
 
         public TodoViewHolder(final View itemView) {
             super(itemView);
             itemTitleView = (TextView) itemView.findViewById(R.id.todoItemTitle);
             itemPriorityView = (TextView) itemView.findViewById(R.id.radioToday);
-
+            itemDateView = (TextView) itemView.findViewById(R.id.todoItemDate);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

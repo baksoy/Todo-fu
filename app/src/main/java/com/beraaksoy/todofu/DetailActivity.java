@@ -288,37 +288,37 @@ public class DetailActivity extends AppCompatActivity
         String monthAbr;
         switch (num) {
             case 0:
-                monthAbr = "JAN";
+                monthAbr = "Jan";
                 break;
             case 1:
-                monthAbr = "FEB";
+                monthAbr = "Feb";
                 break;
             case 2:
-                monthAbr = "MAR";
+                monthAbr = "Mar";
                 break;
             case 3:
-                monthAbr = "APR";
+                monthAbr = "Apr";
                 break;
             case 4:
-                monthAbr = "MAY";
+                monthAbr = "May";
                 break;
             case 5:
-                monthAbr = "JUN";
+                monthAbr = "Jun";
                 break;
             case 6:
-                monthAbr = "JUL";
+                monthAbr = "Jul";
                 break;
             case 7:
-                monthAbr = "AUG";
+                monthAbr = "Aug";
                 break;
             case 8:
-                monthAbr = "SEP";
+                monthAbr = "Sep";
                 break;
             case 9:
-                monthAbr = "OCT";
+                monthAbr = "Oct";
                 break;
             case 10:
-                monthAbr = "NOV";
+                monthAbr = "Nov";
                 break;
             case 11:
                 monthAbr = "DEC";
