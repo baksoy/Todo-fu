@@ -88,7 +88,7 @@ class TodoDAO {
                 TodoDbHelper.TodoTableColumns.TODO_PRIORITY
         };
 
-        String sortOrder = TodoDbHelper.TodoTableColumns.TODO_DATE + " DESC";
+        String sortOrder = TodoDbHelper.TodoTableColumns.TODO_PRIORITY + " DESC";
 
         // Query the table and return a cursor
         Cursor c = db.query(

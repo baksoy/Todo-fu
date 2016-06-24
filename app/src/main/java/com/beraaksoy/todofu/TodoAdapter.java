@@ -8,17 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import github.nisrulz.recyclerviewhelper.RVHAdapter;
 
 /**
  * Created by beraaksoy on 6/6/16.
  */
-public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder> {
+public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder> implements RVHAdapter {
 
     private List<Todo> mTodoList = new ArrayList<>();
     private final Context mContext;
+
 
     public TodoAdapter(List<Todo> list, Context context) {
         mTodoList = list;
@@ -59,6 +64,29 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
     @Override
     public int getItemCount() {
         return mTodoList.size();
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        swap(fromPosition, toPosition);
+        return false;
+    }
+
+
+    private void swap(int firstPosition, int secondPosition) {
+        Collections.swap(mTodoList, firstPosition, secondPosition);
+        notifyItemMoved(firstPosition, secondPosition);
+    }
+
+
+    @Override
+    public void onItemDismiss(final int position, int direction) {
+        TodoDAO dao = new TodoDAO(mContext);
+        Todo todo = mTodoList.get(position);
+        dao.delete(todo);
+        mTodoList.remove(position);
+        notifyItemRemoved(position);
+        Toast.makeText(mContext, "Todo Deleted", Toast.LENGTH_SHORT).show();
     }
 
     public class TodoViewHolder extends RecyclerView.ViewHolder {

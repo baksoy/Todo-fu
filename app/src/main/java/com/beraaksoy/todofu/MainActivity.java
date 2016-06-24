@@ -9,10 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import github.nisrulz.recyclerviewhelper.RVHItemTouchHelperCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
             todoRecyclerView.setAdapter(adapter);
         }
 
+        // Setup onItemTouchHandler to enable drag and drop , swipe left or right
+        ItemTouchHelper.Callback callback = new RVHItemTouchHelperCallback(adapter, true, true, true);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(todoRecyclerView);
 
         // ADD A TODOITEM
         FloatingActionButton add_place_fab = (FloatingActionButton) findViewById(R.id.fab_add_todo);
