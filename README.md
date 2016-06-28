@@ -36,6 +36,7 @@ Here's a walkthrough of implemented user stories:
 <img src='todo-fu.gif' title='Todo-Fu Video Walkthrough' width='348' alt='Todo-Fu Video Walkthrough' />
 
 Swipe-to-dismiss with Undo feature added:
+
 <img src='todo-fu-2.gif' title='Todo-Fu Swipe-to-dismiss Video Walkthrough' width='348' alt='Todo-Fu Swipe-to-dismiss Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
