@@ -21,6 +21,7 @@ The following **optional** features are implemented:
 * [✔] Add support for completion due dates for todo items (and display within RecyclerView item)
 * [✔] Add support for selecting the priority of each todo item (and display in RecyclerView item)
 * [✔] Tweak the style improving the UI / UX, play with colors, images or backgrounds
+* [✔] Swipe to dismiss with Snackbar **undo** action 
 
 The following **additional** features are implemented:
 
@@ -32,7 +33,10 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='todo-fu.gif' title='Todo-Fu Video Walkthrough' width='348' alt='Video Walkthrough' />
+<img src='todo-fu.gif' title='Todo-Fu Video Walkthrough' width='348' alt='Todo-Fu Video Walkthrough' />
+
+Swipe-to-dismiss with Undo feature added:
+<img src='todo-fu-2.gif' title='Todo-Fu Swipe-to-dismiss Video Walkthrough' width='348' alt='Todo-Fu Swipe-to-dismiss Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 

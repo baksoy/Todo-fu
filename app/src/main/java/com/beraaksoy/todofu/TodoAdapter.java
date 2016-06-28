@@ -2,6 +2,7 @@ package com.beraaksoy.todofu;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -81,12 +82,36 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
 
     @Override
     public void onItemDismiss(final int position, int direction) {
-        TodoDAO dao = new TodoDAO(mContext);
-        Todo todo = mTodoList.get(position);
+        final Todo todo = mTodoList.get(position);
+
+        final Long id = todo.getId();
+        final String title = todo.getTitle();
+        final String note = todo.getNote();
+        final String date = todo.getDate();
+        final String priority = todo.getPriority();
+
+        final TodoDAO dao = new TodoDAO(mContext);
         dao.delete(todo);
         mTodoList.remove(position);
         notifyItemRemoved(position);
-        Toast.makeText(mContext, "Todo Deleted", Toast.LENGTH_SHORT).show();
+        Snackbar snackbar = Snackbar.make(((MainActivity) mContext).findViewById(R.id.todoItemTitle), "Todo Deleted", Snackbar.LENGTH_LONG);
+        snackbar.setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "Todo Restored", Toast.LENGTH_SHORT).show();
+                onItemUndoActionClicked();
+            }
+
+            private void onItemUndoActionClicked() {
+                Todo todoItem = new Todo(id, title, note, date, priority);
+                dao.insert(todoItem);
+                mTodoList.add(position, todoItem);
+                notifyDataSetChanged();
+                // TODO: Need to fix a small bug. A todo item modified after UNDO saves on second try.
+            }
+        });
+        snackbar.show();
+
     }
 
     public class TodoViewHolder extends RecyclerView.ViewHolder {
